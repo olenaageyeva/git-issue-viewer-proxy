@@ -1,12 +1,24 @@
 require('dotenv').config();
 const express = require('express');
+var cors = require('cors');
 axios = require("axios");
 const app = express();
 const port = process.env.PORT || 5000;
 
+var allowlist = ['https://olenaageyeva.github.io/git-issue-viewer/', 'https://olenaageyeva.github.io']
+var corsOptionsDelegate = function (req, callback) {
+    var corsOptions;
+    if (allowlist.indexOf(req.header('Origin')) !== -1) {
+      corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+    } else {
+      corsOptions = { origin: false } // disable CORS for this request
+    }
+    callback(null, corsOptions) // callback expects two parameters: error and options
+  }
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-app.get('/api/express_backend', async (req, res) => {
+app.get('/api/express_backend',cors(corsOptionsDelegate), async (req, res) => {
     const user = req.query.user || "";
     const repo = req.query.repo || "";
     const open = req.query.open || "open";
