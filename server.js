@@ -39,7 +39,7 @@ app.get('/api/express_backend',cors(corsOptionsDelegate), async (req, res) => {
         const response = await axios.get(fullUrl, { headers })
         res.send(response.data);
     } catch (err) {
-        console.log(err)
-        res.send({});
+        console.log("Error", err.response.status)       
+        res.status(err.response.status).send(err.message);
     }
 }); 
