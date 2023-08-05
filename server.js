@@ -40,5 +40,6 @@ app.get('/api/express_backend',cors(corsOptionsDelegate), async (req, res) => {
         res.send(response.data);
     } catch (err) {
         console.log(err)
+        res.send({});
     }
 }); 
