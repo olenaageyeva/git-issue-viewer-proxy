@@ -19,11 +19,11 @@ var corsOptionsDelegate = function (req, callback) {
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.get('/api/express_backend',cors(corsOptionsDelegate), async (req, res) => {
-    const user = req.query.user || "";
-    const repo = req.query.repo || "";
-    const open = req.query.open || "open";
+    const { user = "", repo = "", open = "open", per_page = 30, page = 1 } = req.query
     const baseUrl = "https://api.github.com/search/issues";
-    const fullUrl = `${baseUrl}?q=repo:${user}/${repo}+type:issue+state:${open}`;
+    const  q= `repo:${user}/${repo}+type:issue+state:${open}`;
+
+    const fullUrl = `${baseUrl}?q=${q}&per_page=${per_page}&page=${page}`;
     const headers = {
         Authorization: process.env.GIT_TOKEN,
         Accept: "application/json",
